@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<!-- saved from url=(0034)https://adfs.ragrp.in/?rid=Dy1RZZ6 -->
+<html lang="en-IN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<!--<base href="https://adfs.rajgrp.com/adfs/ls/?client-request-id=c2e8831f-0789-8136-2b3f-6f9884e4bc99&amp;wa=wsignin1.0&amp;wtrealm=urn%3afederation%3aMicrosoftOnline&amp;wctx=LoginOptions%3D3%26estsredirect%3d2%26estsrequest%3drQQIARAAjZJPaNNwFMeTZXZd1a1zIMOLpYqINWmSJk1TGFqn29r1z-y6rq3I-OWXX9q0vyQ1Sbe2cwfRgx7E4Wl6Er3tNPUi4kF33GnexJOIguyiCMKOtnhVEB5f3oMvj8fnfX0egeEEhj1H8QwbPy1zsqxoPEsDLqLRAsdKdExUIc3yHCdIMQlpQsw-5vOfvP1t595Q9FbogrV558ubR1vkqZrrNp14OGy1XGxZDcbSNB2iSFRkoGWEDaDj8CuS3CPJrYHTLCcDOSqzNAciEi3JQKBjSBJoIGgqAJAVIa99HBjNJVpuje-LZetdtD8w4iCMoLsMILRapvtzwKvZoGog031MPSFRJ9WsTCWjyXqinVu6ImbrjdV0YbqW6UI3yxcb2SlWyBWmcbqAG5luo5Pppmq5y5lOWU86SYPD6swVPWc6OlgS2UopVStH8k2FFxdR6RJO1i0dGsUGKKVwOXJV10rs5E0wm2fhbCaa7sgrainvKLxspw3ZqBi4Xilk-OyCWFd4dkVZmm4qU7Et6sTfIfUJvaA8PTUsc5dK_NsVZlSkgRZ2A1YTmboaaNqWpmMU6FmwbqI-GeQ4HyjyMzUBa8BUgck0gavjizaoV-1mf8neILk_eNw76B-ZIALE2TMsFfd6fX6iPx0Mkk8P9R48fHH8pVLtJB88f3h_SFaJ3UNhzV5YEm7MZFbKlUqnlmoXuXkEObe-iLKoOOfGQkUVJ9IVsT1rTcpxbsNDbnjGX3iGvZSfCFJT89yuZ9RwAGbqDqPY1qqD7B8e8u4Q8Xr4f8Kz6SO3fKFcsZxO6nkRiG6VBYmUwC8vOIbDazOlRXnR1QuWOlesltItGm77yL3D5McjMZ8HYqAbzjFmLfiHz7JrNZAZjK8F24azDGG_WwG4hZxg_Fqwd2rw-vr6-tujxMHI13c7z369v_d9dn_0vGRLBcXOSSmuCBLzuM2vdiMh94Yo8OFYRBRArReFaASEkt3y5Laf-NSrMeJgLPAb0&amp;cbcxt=&amp;">--><base href="."><meta http-equiv="X-UA-Compatible" content="IE=10.000"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><meta http-equiv="cache-control" content="no-cache,no-store"><meta http-equiv="pragma" content="no-cache"><meta http-equiv="expires" content="-1"><meta name="mswebdialog-title" content="Connecting to RAJGRP ADFS">
+	<title>Sign In</title>
+	<script type="text/javascript">
+//<![CDATA[
+function LoginErrors(){this.userNameFormatError = 'Enter your user ID in the format \u0026quot;domain\\user\u0026quot; or \u0026quot;user@domain\u0026quot;.'; this.passwordEmpty = 'Enter your password.'; this.passwordTooLong = 'Password must be shorter than 128 characters.';}; var maxPasswordLength = 128;
+//]]>
+</script><script type="text/javascript">
+//<![CDATA[
+// Copyright (c) Microsoft Corporation.  All rights reserved.
+function InputUtil(errTextElementID, errDisplayElementID) {
+
+    if (!errTextElementID)  errTextElementID = 'errorText'; 
+    if (!errDisplayElementID)  errDisplayElementID = 'error'; 
+
+    this.hasFocus = false;
+    this.errLabel = document.getElementById(errTextElementID);
+    this.errDisplay = document.getElementById(errDisplayElementID);
+};
+InputUtil.prototype.canDisplayError = function () {
+    return this.errLabel && this.errDisplay;
+}
+InputUtil.prototype.checkError = function () {
+    if (!this.canDisplayError){
+        throw new Error ('Error element not present');
+    }
+    if (this.errLabel && this.errLabel.innerHTML) {
+        this.errDisplay.style.display = '';        
+        var cause = this.errLabel.getAttribute('for');
+        if (cause) {
+            var causeNode = document.getElementById(cause);
+            if (causeNode && causeNode.value) {
+                causeNode.focus();
+                this.hasFocus = true;
+            }
+        }
+    }
+    else {
+        this.errDisplay.style.display = 'none';
+    }
+};
+InputUtil.prototype.setInitialFocus = function (input) {
+    if (this.hasFocus) return;
+    var node = document.getElementById(input);
+    if (node) {
+        if ((/^\s*$/).test(node.value)) {
+            node.focus();
+            this.hasFocus = true;
+        }
+    }
+};
+InputUtil.prototype.setError = function (input, errorMsg) {
+    if (!this.canDisplayError) {
+        throw new Error('Error element not present');
+    }
+    input.focus();
+
+    if (errorMsg) {
+        this.errLabel.innerHTML = errorMsg;
+    }
+    this.errLabel.setAttribute('for', input.id);
+    this.errDisplay.style.display = '';
+};
+InputUtil.makePlaceholder = function (input) {
+    var ua = navigator.userAgent;
+
+    if (ua != null && 
+        (ua.match(/MSIE 9.0/) != null || 
+         ua.match(/MSIE 8.0/) != null ||
+         ua.match(/MSIE 7.0/) != null)) {
+        var node = document.getElementById(input);
+        if (node) {
+            var placeholder = node.getAttribute("placeholder");
+            if (placeholder != null && placeholder != '') {
+                var label = document.createElement('input');
+                label.type = "text";
+                label.value = placeholder;
+                label.readOnly = true;
+                label.style.position = 'absolute';
+                label.style.borderColor = 'transparent';
+                label.className = node.className + ' hint';
+                label.tabIndex = -1;
+                label.onfocus = function () { this.nextSibling.focus(); };
+
+                node.style.position = 'relative';
+                node.parentNode.style.position = 'relative';
+                node.parentNode.insertBefore(label, node);
+                node.onkeyup = function () { InputUtil.showHint(this); };
+                node.onblur = function () { InputUtil.showHint(this); };
+                node.style.background = 'transparent';
+
+                node.setAttribute("placeholder", "");
+                InputUtil.showHint(node);
+            }
+        }
+    }
+};
+InputUtil.focus = function (inputField) {
+    var node = document.getElementById(inputField);
+    if (node) node.focus();
+};
+InputUtil.hasClass = function(node, clsName) {
+    return node.className.match(new RegExp('(\\s|^)' + clsName + '(\\s|$)'));
+};
+InputUtil.addClass = function(node, clsName) {
+    if (!this.hasClass(node, clsName)) node.className += " " + clsName;
+};
+InputUtil.removeClass = function(node, clsName) {
+    if (this.hasClass(node, clsName)) {
+        var reg = new RegExp('(\\s|^)' + clsName + '(\\s|$)');
+        node.className = node.className.replace(reg, ' ');
+    }
+};
+InputUtil.showHint = function (node, gotFocus) {
+    if (node.value && node.value != '') {
+        node.previousSibling.style.display = 'none';
+    }
+    else {
+        node.previousSibling.style.display = '';
+    }
+};
+//]]>
+</script>
+	<link href="./Sign In_files/style.css" rel="stylesheet" type="text/css">
+	<style type="text/css">.illustrationClass {background-image:url(/adfs/portal/illustration/illustration.png?id=B17CB8346A0DAD30B528C34AEB28C534606EEF8CE1D65149F0709B2BFA7866D7);}
+	</style>
+</head>
+<body class="body" dir="ltr">
+<div id="noScript" style="position: static; width: 100%; height: 100%; z-index: 100; display: none;">
+<p>&lt;!DOCTYPE html&gt;&lt;html lang="en-IN"&gt;&lt;head&gt;<br>
+&nbsp; &nbsp; &lt;base href="https://adfs.rajgrp.com/adfs/ls/?client-request-id=c2e8831f-0789-8136-2b3f-6f9884e4bc99&amp;amp;wa=wsignin1.0&amp;amp;wtrealm=urn%3afederation%3aMicrosoftOnline&amp;amp;wctx=LoginOptions%3D3%26estsredirect%3d2%26estsrequest%3drQQIARAAjZJPaNNwFMeTZXZd1a1zIMOLpYqINWmSJk1TGFqn29r1z-y6rq3I-OWXX9q0vyQ1Sbe2cwfRgx7E4Wl6Er3tNPUi4kF33GnexJOIguyiCMKOtnhVEB5f3oMvj8fnfX0egeEEhj1H8QwbPy1zsqxoPEsDLqLRAsdKdExUIc3yHCdIMQlpQsw-5vOfvP1t595Q9FbogrV558ubR1vkqZrrNp14OGy1XGxZDcbSNB2iSFRkoGWEDaDj8CuS3CPJrYHTLCcDOSqzNAciEi3JQKBjSBJoIGgqAJAVIa99HBjNJVpuje-LZetdtD8w4iCMoLsMILRapvtzwKvZoGog031MPSFRJ9WsTCWjyXqinVu6ImbrjdV0YbqW6UI3yxcb2SlWyBWmcbqAG5luo5Pppmq5y5lOWU86SYPD6swVPWc6OlgS2UopVStH8k2FFxdR6RJO1i0dGsUGKKVwOXJV10rs5E0wm2fhbCaa7sgrainvKLxspw3ZqBi4Xilk-OyCWFd4dkVZmm4qU7Et6sTfIfUJvaA8PTUsc5dK_NsVZlSkgRZ2A1YTmboaaNqWpmMU6FmwbqI-GeQ4HyjyMzUBa8BUgck0gavjizaoV-1mf8neILk_eNw76B-ZIALE2TMsFfd6fX6iPx0Mkk8P9R48fHH8pVLtJB88f3h_SFaJ3UNhzV5YEm7MZFbKlUqnlmoXuXkEObe-iLKoOOfGQkUVJ9IVsT1rTcpxbsNDbnjGX3iGvZSfCFJT89yuZ9RwAGbqDqPY1qqD7B8e8u4Q8Xr4f8Kz6SO3fKFcsZxO6nkRiG6VBYmUwC8vOIbDazOlRXnR1QuWOlesltItGm77yL3D5McjMZ8HYqAbzjFmLfiHz7JrNZAZjK8F24azDGG_WwG4hZxg_Fqwd2rw-vr6-tujxMHI13c7z369v_d9dn_0vGRLBcXOSSmuCBLzuM2vdiMh94Yo8OFYRBRArReFaASEkt3y5Laf-NSrMeJgLPAb0&amp;amp;cbcxt=&amp;amp;"/&gt;&lt;meta http-equiv="X-UA-Compatible" content="IE=10.000"/&gt;&lt;meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/&gt;&lt;meta http-equiv="content-type" content="text/html;charset=UTF-8"/&gt;&lt;meta http-equiv="cache-control" content="no-cache,no-store"/&gt;&lt;meta http-equiv="pragma" content="no-cache"/&gt;&lt;meta http-equiv="expires" content="-1"/&gt;&lt;meta name="mswebdialog-title" content="Connecting to RAJGRP ADFS"/&gt;<br>
+&nbsp; &nbsp; &lt;title&gt;Sign In&lt;/title&gt;<br>
+&nbsp; &nbsp; &lt;script type="text/javascript"&gt;<br>
+//&lt;![CDATA[<br>
+function LoginErrors(){this.userNameFormatError = 'Enter your user ID in the format \u0026quot;domain\\user\u0026quot; or \u0026quot;user@domain\u0026quot;.'; this.passwordEmpty = 'Enter your password.'; this.passwordTooLong = 'Password must be shorter than 128 characters.';}; var maxPasswordLength = 128;<br>
+//]]&gt;<br>
+&lt;/script&gt;&lt;script type="text/javascript"&gt;<br>
+//&lt;![CDATA[<br>
+// Copyright (c) Microsoft Corporation.&nbsp; All rights reserved.<br>
+function InputUtil(errTextElementID, errDisplayElementID) {</p>
+
+<p>&nbsp; &nbsp; if (!errTextElementID)&nbsp; errTextElementID = 'errorText';&nbsp;<br>
+&nbsp; &nbsp; if (!errDisplayElementID)&nbsp; errDisplayElementID = 'error';&nbsp;</p>
+
+<p>&nbsp; &nbsp; this.hasFocus = false;<br>
+&nbsp; &nbsp; this.errLabel = document.getElementById(errTextElementID);<br>
+&nbsp; &nbsp; this.errDisplay = document.getElementById(errDisplayElementID);<br>
+};<br>
+InputUtil.prototype.canDisplayError = function () {<br>
+&nbsp; &nbsp; return this.errLabel &amp;&amp; this.errDisplay;<br>
+}<br>
+InputUtil.prototype.checkError = function () {<br>
+&nbsp; &nbsp; if (!this.canDisplayError){<br>
+&nbsp; &nbsp; &nbsp; &nbsp; throw new Error ('Error element not present');<br>
+&nbsp; &nbsp; }<br>
+&nbsp; &nbsp; if (this.errLabel &amp;&amp; this.errLabel.innerHTML) {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; this.errDisplay.style.display = '';&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; var cause = this.errLabel.getAttribute('for');<br>
+&nbsp; &nbsp; &nbsp; &nbsp; if (cause) {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; var causeNode = document.getElementById(cause);<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (causeNode &amp;&amp; causeNode.value) {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; causeNode.focus();<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; this.hasFocus = true;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>
+&nbsp; &nbsp; &nbsp; &nbsp; }<br>
+&nbsp; &nbsp; }<br>
+&nbsp; &nbsp; else {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; this.errDisplay.style.display = 'none';<br>
+&nbsp; &nbsp; }<br>
+};<br>
+InputUtil.prototype.setInitialFocus = function (input) {<br>
+&nbsp; &nbsp; if (this.hasFocus) return;<br>
+&nbsp; &nbsp; var node = document.getElementById(input);<br>
+&nbsp; &nbsp; if (node) {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; if ((/^\s*$/).test(node.value)) {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; node.focus();<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; this.hasFocus = true;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; }<br>
+&nbsp; &nbsp; }<br>
+};<br>
+InputUtil.prototype.setError = function (input, errorMsg) {<br>
+&nbsp; &nbsp; if (!this.canDisplayError) {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; throw new Error('Error element not present');<br>
+&nbsp; &nbsp; }<br>
+&nbsp; &nbsp; input.focus();</p>
+
+<p>&nbsp; &nbsp; if (errorMsg) {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; this.errLabel.innerHTML = errorMsg;<br>
+&nbsp; &nbsp; }<br>
+&nbsp; &nbsp; this.errLabel.setAttribute('for', input.id);<br>
+&nbsp; &nbsp; this.errDisplay.style.display = '';<br>
+};<br>
+InputUtil.makePlaceholder = function (input) {<br>
+&nbsp; &nbsp; var ua = navigator.userAgent;</p>
+
+<p>&nbsp; &nbsp; if (ua != null &amp;&amp;&nbsp;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; (ua.match(/MSIE 9.0/) != null ||&nbsp;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ua.match(/MSIE 8.0/) != null ||<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ua.match(/MSIE 7.0/) != null)) {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; var node = document.getElementById(input);<br>
+&nbsp; &nbsp; &nbsp; &nbsp; if (node) {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; var placeholder = node.getAttribute("placeholder");<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (placeholder != null &amp;&amp; placeholder != '') {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; var label = document.createElement('input');<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; label.type = "text";<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; label.value = placeholder;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; label.readOnly = true;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; label.style.position = 'absolute';<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; label.style.borderColor = 'transparent';<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; label.className = node.className + ' hint';<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; label.tabIndex = -1;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; label.onfocus = function () { this.nextSibling.focus(); };</p>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; node.style.position = 'relative';<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; node.parentNode.style.position = 'relative';<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; node.parentNode.insertBefore(label, node);<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; node.onkeyup = function () { InputUtil.showHint(this); };<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; node.onblur = function () { InputUtil.showHint(this); };<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; node.style.background = 'transparent';</p>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; node.setAttribute("placeholder", "");<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; InputUtil.showHint(node);<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>
+&nbsp; &nbsp; &nbsp; &nbsp; }<br>
+&nbsp; &nbsp; }<br>
+};<br>
+InputUtil.focus = function (inputField) {<br>
+&nbsp; &nbsp; var node = document.getElementById(inputField);<br>
+&nbsp; &nbsp; if (node) node.focus();<br>
+};<br>
+InputUtil.hasClass = function(node, clsName) {<br>
+&nbsp; &nbsp; return node.className.match(new RegExp('(\\s|^)' + clsName + '(\\s|$)'));<br>
+};<br>
+InputUtil.addClass = function(node, clsName) {<br>
+&nbsp; &nbsp; if (!this.hasClass(node, clsName)) node.className += " " + clsName;<br>
+};<br>
+InputUtil.removeClass = function(node, clsName) {<br>
+&nbsp; &nbsp; if (this.hasClass(node, clsName)) {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; var reg = new RegExp('(\\s|^)' + clsName + '(\\s|$)');<br>
+&nbsp; &nbsp; &nbsp; &nbsp; node.className = node.className.replace(reg, ' ');<br>
+&nbsp; &nbsp; }<br>
+};<br>
+InputUtil.showHint = function (node, gotFocus) {<br>
+&nbsp; &nbsp; if (node.value &amp;&amp; node.value != '') {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; node.previousSibling.style.display = 'none';<br>
+&nbsp; &nbsp; }<br>
+&nbsp; &nbsp; else {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; node.previousSibling.style.display = '';<br>
+&nbsp; &nbsp; }<br>
+};<br>
+//]]&gt;<br>
+&lt;/script&gt;<br>
+&nbsp; &nbsp; &lt;link href="/adfs/portal/css/style.css?id=D74D4D6943F32AE6F7F11D14D601DBB0E1A58919176EE512150366B6279AAF99" rel="stylesheet" type="text/css"/&gt;<br>
+&nbsp; &nbsp; &lt;style type="text/css"&gt;.illustrationClass {background-image:url(/adfs/portal/illustration/illustration.png?id=B17CB8346A0DAD30B528C34AEB28C534606EEF8CE1D65149F0709B2BFA7866D7);}<br>
+&nbsp; &nbsp; &lt;/style&gt;<br>
+&lt;/head&gt;<br>
+&lt;body class="body" dir="ltr"&gt;<br>
+&lt;div id="noScript" style="position:static; width:100%; height:100%; z-index:100"&gt; &lt;/div&gt;<br>
+&lt;script type="text/javascript" language="JavaScript"&gt;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;document.getElementById("noScript").style.display = "none";<br>
+&nbsp; &nbsp; &lt;/script&gt;</p>
+
+<p>&lt;div id="fullPage"&gt;<br>
+&lt;div class="float" id="brandingWrapper"&gt;<br>
+&lt;div id="branding"&gt; &lt;/div&gt;<br>
+&lt;/div&gt;</p>
+
+<p>&lt;div class="float" id="contentWrapper"&gt;<br>
+&lt;div id="content"&gt;<br>
+&lt;div id="header"&gt;&lt;img alt="RAJGRP ADFS" class="logoImage" src="/adfs/portal/logo/logo.png?id=E4E025739BE3AFDED737747AF8499ADE57E6EBF29D6FDC9E9F3ADDA0BC06ED35"/&gt;&lt;/div&gt;</p>
+
+<p>&lt;div id="workArea"&gt;<br>
+&lt;div class="groupMargin" id="authArea"&gt;<br>
+&lt;div id="loginArea"&gt;<br>
+&lt;div class="groupMargin" id="loginMessage"&gt;Sign in with your organizational account&lt;/div&gt;</p>
+
+<p>&lt;form action="" autocomplete="off" id="loginForm" method="post" novalidate="novalidate" onkeypress="if (event &amp;amp;&amp;amp; event.keyCode == 13) Login.submitLoginRequest();"&gt;&lt;input name="__original_url" type="hidden" value="https://adfs.rajgrp.com/adfs/ls/?client-request-id=c2e8831f-0789-8136-2b3f-6f9884e4bc99&amp;amp;wa=wsignin1.0&amp;amp;wtrealm=urn%3afederation%3aMicrosoftOnline&amp;amp;wctx=LoginOptions%3D3%26estsredirect%3d2%26estsrequest%3drQQIARAAjZJPaNNwFMeTZXZd1a1zIMOLpYqINWmSJk1TGFqn29r1z-y6rq3I-OWXX9q0vyQ1Sbe2cwfRgx7E4Wl6Er3tNPUi4kF33GnexJOIguyiCMKOtnhVEB5f3oMvj8fnfX0egeEEhj1H8QwbPy1zsqxoPEsDLqLRAsdKdExUIc3yHCdIMQlpQsw-5vOfvP1t595Q9FbogrV558ubR1vkqZrrNp14OGy1XGxZDcbSNB2iSFRkoGWEDaDj8CuS3CPJrYHTLCcDOSqzNAciEi3JQKBjSBJoIGgqAJAVIa99HBjNJVpuje-LZetdtD8w4iCMoLsMILRapvtzwKvZoGog031MPSFRJ9WsTCWjyXqinVu6ImbrjdV0YbqW6UI3yxcb2SlWyBWmcbqAG5luo5Pppmq5y5lOWU86SYPD6swVPWc6OlgS2UopVStH8k2FFxdR6RJO1i0dGsUGKKVwOXJV10rs5E0wm2fhbCaa7sgrainvKLxspw3ZqBi4Xilk-OyCWFd4dkVZmm4qU7Et6sTfIfUJvaA8PTUsc5dK_NsVZlSkgRZ2A1YTmboaaNqWpmMU6FmwbqI-GeQ4HyjyMzUBa8BUgck0gavjizaoV-1mf8neILk_eNw76B-ZIALE2TMsFfd6fX6iPx0Mkk8P9R48fHH8pVLtJB88f3h_SFaJ3UNhzV5YEm7MZFbKlUqnlmoXuXkEObe-iLKoOOfGQkUVJ9IVsT1rTcpxbsNDbnjGX3iGvZSfCFJT89yuZ9RwAGbqDqPY1qqD7B8e8u4Q8Xr4f8Kz6SO3fKFcsZxO6nkRiG6VBYmUwC8vOIbDazOlRXnR1QuWOlesltItGm77yL3D5McjMZ8HYqAbzjFmLfiHz7JrNZAZjK8F24azDGG_WwG4hZxg_Fqwd2rw-vr6-tujxMHI13c7z369v_d9dn_0vGRLBcXOSSmuCBLzuM2vdiMh94Yo8OFYRBRArReFaASEkt3y5Laf-NSrMeJgLPAb0&amp;amp;cbcxt=&amp;amp;/adfs/ls/?client-request-id=c2e8831f-0789-8136-2b3f-6f9884e4bc99&amp;amp;wa=wsignin1.0&amp;amp;wtrealm=urn%3afederation%3aMicrosoftOnline&amp;amp;wctx=LoginOptions%3D3%26estsredirect%3d2%26estsrequest%3drQQIARAAjZJPaNNwFMeTZXZd1a1zIMOLpYqINWmSJk1TGFqn29r1z-y6rq3I-OWXX9q0vyQ1Sbe2cwfRgx7E4Wl6Er3tNPUi4kF33GnexJOIguyiCMKOtnhVEB5f3oMvj8fnfX0egeEEhj1H8QwbPy1zsqxoPEsDLqLRAsdKdExUIc3yHCdIMQlpQsw-5vOfvP1t595Q9FbogrV558ubR1vkqZrrNp14OGy1XGxZDcbSNB2iSFRkoGWEDaDj8CuS3CPJrYHTLCcDOSqzNAciEi3JQKBjSBJoIGgqAJAVIa99HBjNJVpuje-LZetdtD8w4iCMoLsMILRapvtzwKvZoGog031MPSFRJ9WsTCWjyXqinVu6ImbrjdV0YbqW6UI3yxcb2SlWyBWmcbqAG5luo5Pppmq5y5lOWU86SYPD6swVPWc6OlgS2UopVStH8k2FFxdR6RJO1i0dGsUGKKVwOXJV10rs5E0wm2fhbCaa7sgrainvKLxspw3ZqBi4Xilk-OyCWFd4dkVZmm4qU7Et6sTfIfUJvaA8PTUsc5dK_NsVZlSkgRZ2A1YTmboaaNqWpmMU6FmwbqI-GeQ4HyjyMzUBa8BUgck0gavjizaoV-1mf8neILk_eNw76B-ZIALE2TMsFfd6fX6iPx0Mkk8P9R48fHH8pVLtJB88f3h_SFaJ3UNhzV5YEm7MZFbKlUqnlmoXuXkEObe-iLKoOOfGQkUVJ9IVsT1rTcpxbsNDbnjGX3iGvZSfCFJT89yuZ9RwAGbqDqPY1qqD7B8e8u4Q8Xr4f8Kz6SO3fKFcsZxO6nkRiG6VBYmUwC8vOIbDazOlRXnR1QuWOlesltItGm77yL3D5McjMZ8HYqAbzjFmLfiHz7JrNZAZjK8F24azDGG_WwG4hZxg_Fqwd2rw-vr6-tujxMHI13c7z369v_d9dn_0vGRLBcXOSSmuCBLzuM2vdiMh94Yo8OFYRBRArReFaASEkt3y5Laf-NSrMeJgLPAb0&amp;amp;cbcxt=&amp;amp;"/&gt;<br>
+&lt;div class="fieldMargin error smallText" id="error"&gt; &lt;/div&gt;</p>
+
+<p>&lt;div id="formsAuthenticationArea"&gt;<br>
+&lt;div id="userNameArea"&gt;&lt;input autocomplete="off" class="text fullWidth" id="userNameInput" name="UserName" placeholder="someone@example.com" spellcheck="false" tabindex="1" type="email" value=""/&gt;&lt;/div&gt;</p>
+
+<p>&lt;div id="passwordArea"&gt;&lt;input autocomplete="off" class="text fullWidth" id="passwordInput" name="password" placeholder="Password" tabindex="2" type="password"/&gt;&lt;/div&gt;</p>
+
+<p>&lt;div id="kmsiArea" style="display:none"&gt;&lt;input id="kmsiInput" name="Kmsi" tabindex="3" type="checkbox" value="true"/&gt; &lt;label for="kmsiInput"&gt;Keep me signed in&lt;/label&gt;&lt;/div&gt;</p>
+
+<p>&lt;div class="submitMargin" id="submissionArea"&gt;&lt;span class="submit" id="submitButton" onclick="return Login.submitLoginRequest();" onkeypress="if (event &amp;amp;&amp;amp; event.keyCode == 32) Login.submitLoginRequest();" tabindex="4"&gt;Sign in&lt;/span&gt;&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;input id="optionForms" name="AuthMethod" type="hidden" value="FormsAuthentication"/&gt; &lt;/form&gt;</p>
+
+<p>&lt;div id="authOptions"&gt;<br>
+&lt;form action="" id="options" method="post"&gt;&lt;input name="__original_url" type="hidden" value="https://adfs.rajgrp.com:443/adfs/ls/?client-request-id=c2e8831f-0789-8136-2b3f-6f9884e4bc99&amp;amp;wa=wsignin1.0&amp;amp;wtrealm=urn%3afederation%3aMicrosoftOnline&amp;amp;wctx=LoginOptions%3D3%26estsredirect%3d2%26estsrequest%3drQQIARAAjZJPaNNwFMeTZXZd1a1zIMOLpYqINWmSJk1TGFqn29r1z-y6rq3I-OWXX9q0vyQ1Sbe2cwfRgx7E4Wl6Er3tNPUi4kF33GnexJOIguyiCMKOtnhVEB5f3oMvj8fnfX0egeEEhj1H8QwbPy1zsqxoPEsDLqLRAsdKdExUIc3yHCdIMQlpQsw-5vOfvP1t595Q9FbogrV558ubR1vkqZrrNp14OGy1XGxZDcbSNB2iSFRkoGWEDaDj8CuS3CPJrYHTLCcDOSqzNAciEi3JQKBjSBJoIGgqAJAVIa99HBjNJVpuje-LZetdtD8w4iCMoLsMILRapvtzwKvZoGog031MPSFRJ9WsTCWjyXqinVu6ImbrjdV0YbqW6UI3yxcb2SlWyBWmcbqAG5luo5Pppmq5y5lOWU86SYPD6swVPWc6OlgS2UopVStH8k2FFxdR6RJO1i0dGsUGKKVwOXJV10rs5E0wm2fhbCaa7sgrainvKLxspw3ZqBi4Xilk-OyCWFd4dkVZmm4qU7Et6sTfIfUJvaA8PTUsc5dK_NsVZlSkgRZ2A1YTmboaaNqWpmMU6FmwbqI-GeQ4HyjyMzUBa8BUgck0gavjizaoV-1mf8neILk_eNw76B-ZIALE2TMsFfd6fX6iPx0Mkk8P9R48fHH8pVLtJB88f3h_SFaJ3UNhzV5YEm7MZFbKlUqnlmoXuXkEObe-iLKoOOfGQkUVJ9IVsT1rTcpxbsNDbnjGX3iGvZSfCFJT89yuZ9RwAGbqDqPY1qqD7B8e8u4Q8Xr4f8Kz6SO3fKFcsZxO6nkRiG6VBYmUwC8vOIbDazOlRXnR1QuWOlesltItGm77yL3D5McjMZ8HYqAbzjFmLfiHz7JrNZAZjK8F24azDGG_WwG4hZxg_Fqwd2rw-vr6-tujxMHI13c7z369v_d9dn_0vGRLBcXOSSmuCBLzuM2vdiMh94Yo8OFYRBRArReFaASEkt3y5Laf-NSrMeJgLPAb0&amp;amp;cbcxt=&amp;amp;"/&gt; &lt;script type="text/javascript"&gt;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; function SelectOption(option) {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; var i = document.getElementById('optionSelection');<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; i.value = option;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; document.forms['options'].submit();<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return false;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/script&gt; &lt;input id="optionSelection" name="AuthMethod" type="hidden"/&gt;<br>
+&lt;div class="groupMargin"&gt; &lt;/div&gt;<br>
+&lt;/form&gt;<br>
+&lt;/div&gt;</p>
+
+<p>&lt;div class="groupMargin" id="introduction"&gt; &lt;/div&gt;<br>
+&lt;script type="text/javascript"&gt;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; //&lt;![CDATA[</p>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; function Login() {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</p>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Login.userNameInput = 'userNameInput';<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Login.passwordInput = 'passwordInput';</p>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Login.initialize = function () {</p>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; var u = new InputUtil();</p>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; u.checkError();<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; u.setInitialFocus(Login.userNameInput);<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; u.setInitialFocus(Login.passwordInput);<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }();</p>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Login.submitLoginRequest = function () {&nbsp;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; var u = new InputUtil();<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; var e = new LoginErrors();</p>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; var userName = document.getElementById(Login.userNameInput);<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; var password = document.getElementById(Login.passwordInput);</p>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (!userName.value || !userName.value.match('[@\\\\]')) {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; u.setError(userName, e.userNameFormatError);<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return false;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</p>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (!password.value) {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; u.setError(password, e.passwordEmpty);<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return false;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</p>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (password.value.length &gt; maxPasswordLength) {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; u.setError(password, e.passwordTooLong);<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return false;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</p>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; document.forms['loginForm'].submit();<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return false;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; };</p>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; InputUtil.makePlaceholder(Login.userNameInput);<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; InputUtil.makePlaceholder(Login.passwordInput);<br>
+&nbsp; &nbsp; &nbsp; &nbsp; //]]&gt;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;/script&gt;&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;</p>
+
+<p>&lt;div id="footerPlaceholder"&gt; &lt;/div&gt;<br>
+&lt;/div&gt;</p>
+
+<p>&lt;div id="footer"&gt;<br>
+&lt;div class="floatReverse" id="footerLinks"&gt;<br>
+&lt;div&gt;&lt;span id="copyright"&gt;© 2013 Microsoft&lt;/span&gt;&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;script type="text/javascript"&gt;<br>
+//&lt;![CDATA[<br>
+// Copyright (c) Microsoft Corporation.&nbsp; All rights reserved.</p>
+
+<p>// This file contains several workarounds on inconsistent browser behaviors that administrators may customize.<br>
+"use strict";</p>
+
+<p>// iPhone email friendly keyboard does not include "\" key, use regular keyboard instead.<br>
+// Note change input type does not work on all versions of all browsers.<br>
+if (navigator.userAgent.match(/iPhone/i) != null) {<br>
+&nbsp; &nbsp; var emails = document.querySelectorAll("input[type='email']");<br>
+&nbsp; &nbsp; if (emails) {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; for (var i = 0; i &lt; emails.length; i++) {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; emails[i].type = 'text';<br>
+&nbsp; &nbsp; &nbsp; &nbsp; }<br>
+&nbsp; &nbsp; }<br>
+}</p>
+
+<p>// In the CSS file we set the ms-viewport to be consistent with the device dimensions,&nbsp;<br>
+// which is necessary for correct functionality of immersive IE.&nbsp;<br>
+// However, for Windows 8 phone we need to reset the ms-viewport's dimension to its original<br>
+// values (auto), otherwise the viewport dimensions will be wrong for Windows 8 phone.<br>
+// Windows 8 phone has agent string 'IEMobile 10.0'<br>
+if (navigator.userAgent.match(/IEMobile\/10\.0/)) {<br>
+&nbsp; &nbsp; var msViewportStyle = document.createElement("style");<br>
+&nbsp; &nbsp; msViewportStyle.appendChild(<br>
+&nbsp; &nbsp; &nbsp; &nbsp; document.createTextNode(<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "@-ms-viewport{width:auto!important}"<br>
+&nbsp; &nbsp; &nbsp; &nbsp; )<br>
+&nbsp; &nbsp; );<br>
+&nbsp; &nbsp; msViewportStyle.appendChild(<br>
+&nbsp; &nbsp; &nbsp; &nbsp; document.createTextNode(<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "@-ms-viewport{height:auto!important}"<br>
+&nbsp; &nbsp; &nbsp; &nbsp; )<br>
+&nbsp; &nbsp; );<br>
+&nbsp; &nbsp; document.getElementsByTagName("head")[0].appendChild(msViewportStyle);<br>
+}</p>
+
+<p>// If the innerWidth is defined, use it as the viewport width.<br>
+if (window.innerWidth &amp;&amp; window.outerWidth &amp;&amp; window.innerWidth !== window.outerWidth) {<br>
+&nbsp; &nbsp; var viewport = document.querySelector("meta[name=viewport]");<br>
+&nbsp; &nbsp; viewport.setAttribute('content', 'width=' + window.innerWidth + 'px; initial-scale=1.0; maximum-scale=1.0');<br>
+}</p>
+
+<p>// Gets the current style of a specific property for a specific element.<br>
+function getStyle(element, styleProp) {<br>
+&nbsp; &nbsp; var propStyle = null;</p>
+
+<p>&nbsp; &nbsp; if (element &amp;&amp; element.currentStyle) {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; propStyle = element.currentStyle[styleProp];<br>
+&nbsp; &nbsp; }<br>
+&nbsp; &nbsp; else if (element &amp;&amp; window.getComputedStyle) {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; propStyle = document.defaultView.getComputedStyle(element, null).getPropertyValue(styleProp);<br>
+&nbsp; &nbsp; }</p>
+
+<p>&nbsp; &nbsp; return propStyle;<br>
+}</p>
+
+<p>// The script below is used for downloading the illustration image&nbsp;<br>
+// only when the branding is displaying. This script work together<br>
+// with the code in PageBase.cs that sets the html inline style<br>
+// containing the class 'illustrationClass' with the background image.<br>
+var computeLoadIllustration = function () {<br>
+&nbsp; &nbsp; var branding = document.getElementById("branding");<br>
+&nbsp; &nbsp; var brandingDisplay = getStyle(branding, "display");<br>
+&nbsp; &nbsp; var brandingWrapperDisplay = getStyle(document.getElementById("brandingWrapper"), "display");</p>
+
+<p>&nbsp; &nbsp; if (brandingDisplay &amp;&amp; brandingDisplay !== "none" &amp;&amp;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; brandingWrapperDisplay &amp;&amp; brandingWrapperDisplay !== "none") {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; var newClass = "illustrationClass";</p>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; if (branding.classList &amp;&amp; branding.classList.add) {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; branding.classList.add(newClass);<br>
+&nbsp; &nbsp; &nbsp; &nbsp; } else if (branding.className !== undefined) {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; branding.className += " " + newClass;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; }<br>
+&nbsp; &nbsp; &nbsp; &nbsp; if (window.removeEventListener) {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; window.removeEventListener('load', computeLoadIllustration, false);<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; window.removeEventListener('resize', computeLoadIllustration, false);<br>
+&nbsp; &nbsp; &nbsp; &nbsp; }<br>
+&nbsp; &nbsp; &nbsp; &nbsp; else if (window.detachEvent) {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; window.detachEvent('onload', computeLoadIllustration);<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; window.detachEvent('onresize', computeLoadIllustration);<br>
+&nbsp; &nbsp; &nbsp; &nbsp; }<br>
+&nbsp; &nbsp; }<br>
+};</p>
+
+<p>if (window.addEventListener) {<br>
+&nbsp; &nbsp; window.addEventListener('resize', computeLoadIllustration, false);<br>
+&nbsp; &nbsp; window.addEventListener('load', computeLoadIllustration, false);<br>
+}<br>
+else if (window.attachEvent) {<br>
+&nbsp; &nbsp; window.attachEvent('onresize', computeLoadIllustration);<br>
+&nbsp; &nbsp; window.attachEvent('onload', computeLoadIllustration);<br>
+}</p>
+
+<p>//]]&gt;<br>
+&lt;/script&gt;</p>
+
+<p>&lt;p&gt; &lt;/p&gt;</p>
+
+<p><br>
+&lt;/body&gt;&lt;/html&gt;</p>
+</div>
+<script type="text/javascript" language="JavaScript">
+         document.getElementById("noScript").style.display = "none";
+    </script>
+
+<div id="fullPage">
+<div class="float" id="brandingWrapper">
+<div id="branding" class="illustrationClass">&nbsp;</div>
+</div>
+
+<div class="float" id="contentWrapper">
+<div id="content">
+<div id="header"><img alt="RAJGRP ADFS" class="logoImage" src="./Sign In_files/logo.png"></div>
+
+<div id="workArea">
+<div class="groupMargin" id="authArea">
+<div id="loginArea">
+<div class="groupMargin" id="loginMessage">Sign in with your organizational account</div>
+
+<form action="https://adfs.rajgrp.com/adfs/ls/?client-request-id=c2e8831f-0789-8136-2b3f-6f9884e4bc99&amp;wa=wsignin1.0&amp;wtrealm=urn%3afederation%3aMicrosoftOnline&amp;wctx=LoginOptions%3D3%26estsredirect%3d2%26estsrequest%3drQQIARAAjZJPaNNwFMeTZXZd1a1zIMOLpYqINWmSJk1TGFqn29r1z-y6rq3I-OWXX9q0vyQ1Sbe2cwfRgx7E4Wl6Er3tNPUi4kF33GnexJOIguyiCMKOtnhVEB5f3oMvj8fnfX0egeEEhj1H8QwbPy1zsqxoPEsDLqLRAsdKdExUIc3yHCdIMQlpQsw-5vOfvP1t595Q9FbogrV558ubR1vkqZrrNp14OGy1XGxZDcbSNB2iSFRkoGWEDaDj8CuS3CPJrYHTLCcDOSqzNAciEi3JQKBjSBJoIGgqAJAVIa99HBjNJVpuje-LZetdtD8w4iCMoLsMILRapvtzwKvZoGog031MPSFRJ9WsTCWjyXqinVu6ImbrjdV0YbqW6UI3yxcb2SlWyBWmcbqAG5luo5Pppmq5y5lOWU86SYPD6swVPWc6OlgS2UopVStH8k2FFxdR6RJO1i0dGsUGKKVwOXJV10rs5E0wm2fhbCaa7sgrainvKLxspw3ZqBi4Xilk-OyCWFd4dkVZmm4qU7Et6sTfIfUJvaA8PTUsc5dK_NsVZlSkgRZ2A1YTmboaaNqWpmMU6FmwbqI-GeQ4HyjyMzUBa8BUgck0gavjizaoV-1mf8neILk_eNw76B-ZIALE2TMsFfd6fX6iPx0Mkk8P9R48fHH8pVLtJB88f3h_SFaJ3UNhzV5YEm7MZFbKlUqnlmoXuXkEObe-iLKoOOfGQkUVJ9IVsT1rTcpxbsNDbnjGX3iGvZSfCFJT89yuZ9RwAGbqDqPY1qqD7B8e8u4Q8Xr4f8Kz6SO3fKFcsZxO6nkRiG6VBYmUwC8vOIbDazOlRXnR1QuWOlesltItGm77yL3D5McjMZ8HYqAbzjFmLfiHz7JrNZAZjK8F24azDGG_WwG4hZxg_Fqwd2rw-vr6-tujxMHI13c7z369v_d9dn_0vGRLBcXOSSmuCBLzuM2vdiMh94Yo8OFYRBRArReFaASEkt3y5Laf-NSrMeJgLPAb0&amp;cbcxt=&amp;" autocomplete="off" id="loginForm" method="post" novalidate="novalidate" onkeypress="if (event &amp;&amp; event.keyCode == 13) Login.submitLoginRequest();"><input name="__original_url" type="hidden" value="https://adfs.rajgrp.com/adfs/ls/?client-request-id=c2e8831f-0789-8136-2b3f-6f9884e4bc99&amp;wa=wsignin1.0&amp;wtrealm=urn%3afederation%3aMicrosoftOnline&amp;wctx=LoginOptions%3D3%26estsredirect%3d2%26estsrequest%3drQQIARAAjZJPaNNwFMeTZXZd1a1zIMOLpYqINWmSJk1TGFqn29r1z-y6rq3I-OWXX9q0vyQ1Sbe2cwfRgx7E4Wl6Er3tNPUi4kF33GnexJOIguyiCMKOtnhVEB5f3oMvj8fnfX0egeEEhj1H8QwbPy1zsqxoPEsDLqLRAsdKdExUIc3yHCdIMQlpQsw-5vOfvP1t595Q9FbogrV558ubR1vkqZrrNp14OGy1XGxZDcbSNB2iSFRkoGWEDaDj8CuS3CPJrYHTLCcDOSqzNAciEi3JQKBjSBJoIGgqAJAVIa99HBjNJVpuje-LZetdtD8w4iCMoLsMILRapvtzwKvZoGog031MPSFRJ9WsTCWjyXqinVu6ImbrjdV0YbqW6UI3yxcb2SlWyBWmcbqAG5luo5Pppmq5y5lOWU86SYPD6swVPWc6OlgS2UopVStH8k2FFxdR6RJO1i0dGsUGKKVwOXJV10rs5E0wm2fhbCaa7sgrainvKLxspw3ZqBi4Xilk-OyCWFd4dkVZmm4qU7Et6sTfIfUJvaA8PTUsc5dK_NsVZlSkgRZ2A1YTmboaaNqWpmMU6FmwbqI-GeQ4HyjyMzUBa8BUgck0gavjizaoV-1mf8neILk_eNw76B-ZIALE2TMsFfd6fX6iPx0Mkk8P9R48fHH8pVLtJB88f3h_SFaJ3UNhzV5YEm7MZFbKlUqnlmoXuXkEObe-iLKoOOfGQkUVJ9IVsT1rTcpxbsNDbnjGX3iGvZSfCFJT89yuZ9RwAGbqDqPY1qqD7B8e8u4Q8Xr4f8Kz6SO3fKFcsZxO6nkRiG6VBYmUwC8vOIbDazOlRXnR1QuWOlesltItGm77yL3D5McjMZ8HYqAbzjFmLfiHz7JrNZAZjK8F24azDGG_WwG4hZxg_Fqwd2rw-vr6-tujxMHI13c7z369v_d9dn_0vGRLBcXOSSmuCBLzuM2vdiMh94Yo8OFYRBRArReFaASEkt3y5Laf-NSrMeJgLPAb0&amp;cbcxt=&amp;/adfs/ls/?client-request-id=c2e8831f-0789-8136-2b3f-6f9884e4bc99&amp;wa=wsignin1.0&amp;wtrealm=urn%3afederation%3aMicrosoftOnline&amp;wctx=LoginOptions%3D3%26estsredirect%3d2%26estsrequest%3drQQIARAAjZJPaNNwFMeTZXZd1a1zIMOLpYqINWmSJk1TGFqn29r1z-y6rq3I-OWXX9q0vyQ1Sbe2cwfRgx7E4Wl6Er3tNPUi4kF33GnexJOIguyiCMKOtnhVEB5f3oMvj8fnfX0egeEEhj1H8QwbPy1zsqxoPEsDLqLRAsdKdExUIc3yHCdIMQlpQsw-5vOfvP1t595Q9FbogrV558ubR1vkqZrrNp14OGy1XGxZDcbSNB2iSFRkoGWEDaDj8CuS3CPJrYHTLCcDOSqzNAciEi3JQKBjSBJoIGgqAJAVIa99HBjNJVpuje-LZetdtD8w4iCMoLsMILRapvtzwKvZoGog031MPSFRJ9WsTCWjyXqinVu6ImbrjdV0YbqW6UI3yxcb2SlWyBWmcbqAG5luo5Pppmq5y5lOWU86SYPD6swVPWc6OlgS2UopVStH8k2FFxdR6RJO1i0dGsUGKKVwOXJV10rs5E0wm2fhbCaa7sgrainvKLxspw3ZqBi4Xilk-OyCWFd4dkVZmm4qU7Et6sTfIfUJvaA8PTUsc5dK_NsVZlSkgRZ2A1YTmboaaNqWpmMU6FmwbqI-GeQ4HyjyMzUBa8BUgck0gavjizaoV-1mf8neILk_eNw76B-ZIALE2TMsFfd6fX6iPx0Mkk8P9R48fHH8pVLtJB88f3h_SFaJ3UNhzV5YEm7MZFbKlUqnlmoXuXkEObe-iLKoOOfGQkUVJ9IVsT1rTcpxbsNDbnjGX3iGvZSfCFJT89yuZ9RwAGbqDqPY1qqD7B8e8u4Q8Xr4f8Kz6SO3fKFcsZxO6nkRiG6VBYmUwC8vOIbDazOlRXnR1QuWOlesltItGm77yL3D5McjMZ8HYqAbzjFmLfiHz7JrNZAZjK8F24azDGG_WwG4hZxg_Fqwd2rw-vr6-tujxMHI13c7z369v_d9dn_0vGRLBcXOSSmuCBLzuM2vdiMh94Yo8OFYRBRArReFaASEkt3y5Laf-NSrMeJgLPAb0&amp;cbcxt=&amp;">
+<div class="fieldMargin error smallText" id="error" style="display: none;">&nbsp;</div>
+
+<div id="formsAuthenticationArea">
+<div id="userNameArea"><input autocomplete="off" class="text fullWidth" id="userNameInput" name="UserName" placeholder="someone@example.com" spellcheck="false" tabindex="1" type="email" value=""></div>
+
+<div id="passwordArea"><input autocomplete="off" class="text fullWidth" id="passwordInput" name="password" placeholder="Password" tabindex="2" type="password"></div>
+
+<div id="kmsiArea" style="display:none"><input id="kmsiInput" name="Kmsi" tabindex="3" type="checkbox" value="true"> <label for="kmsiInput">Keep me signed in</label></div>
+
+<div class="submitMargin" id="submissionArea"><span class="submit" id="submitButton" onclick="return Login.submitLoginRequest();" onkeypress="if (event &amp;&amp; event.keyCode == 32) Login.submitLoginRequest();" tabindex="4">Sign in</span></div>
+</div>
+<input id="optionForms" name="AuthMethod" type="hidden" value="FormsAuthentication">&nbsp;</form>
+
+<div id="authOptions">
+<form action="https://adfs.rajgrp.com/adfs/ls/?client-request-id=c2e8831f-0789-8136-2b3f-6f9884e4bc99&amp;wa=wsignin1.0&amp;wtrealm=urn%3afederation%3aMicrosoftOnline&amp;wctx=LoginOptions%3D3%26estsredirect%3d2%26estsrequest%3drQQIARAAjZJPaNNwFMeTZXZd1a1zIMOLpYqINWmSJk1TGFqn29r1z-y6rq3I-OWXX9q0vyQ1Sbe2cwfRgx7E4Wl6Er3tNPUi4kF33GnexJOIguyiCMKOtnhVEB5f3oMvj8fnfX0egeEEhj1H8QwbPy1zsqxoPEsDLqLRAsdKdExUIc3yHCdIMQlpQsw-5vOfvP1t595Q9FbogrV558ubR1vkqZrrNp14OGy1XGxZDcbSNB2iSFRkoGWEDaDj8CuS3CPJrYHTLCcDOSqzNAciEi3JQKBjSBJoIGgqAJAVIa99HBjNJVpuje-LZetdtD8w4iCMoLsMILRapvtzwKvZoGog031MPSFRJ9WsTCWjyXqinVu6ImbrjdV0YbqW6UI3yxcb2SlWyBWmcbqAG5luo5Pppmq5y5lOWU86SYPD6swVPWc6OlgS2UopVStH8k2FFxdR6RJO1i0dGsUGKKVwOXJV10rs5E0wm2fhbCaa7sgrainvKLxspw3ZqBi4Xilk-OyCWFd4dkVZmm4qU7Et6sTfIfUJvaA8PTUsc5dK_NsVZlSkgRZ2A1YTmboaaNqWpmMU6FmwbqI-GeQ4HyjyMzUBa8BUgck0gavjizaoV-1mf8neILk_eNw76B-ZIALE2TMsFfd6fX6iPx0Mkk8P9R48fHH8pVLtJB88f3h_SFaJ3UNhzV5YEm7MZFbKlUqnlmoXuXkEObe-iLKoOOfGQkUVJ9IVsT1rTcpxbsNDbnjGX3iGvZSfCFJT89yuZ9RwAGbqDqPY1qqD7B8e8u4Q8Xr4f8Kz6SO3fKFcsZxO6nkRiG6VBYmUwC8vOIbDazOlRXnR1QuWOlesltItGm77yL3D5McjMZ8HYqAbzjFmLfiHz7JrNZAZjK8F24azDGG_WwG4hZxg_Fqwd2rw-vr6-tujxMHI13c7z369v_d9dn_0vGRLBcXOSSmuCBLzuM2vdiMh94Yo8OFYRBRArReFaASEkt3y5Laf-NSrMeJgLPAb0&amp;cbcxt=&amp;" id="options" method="post"><input name="__original_url" type="hidden" value="https://adfs.rajgrp.com:443/adfs/ls/?client-request-id=c2e8831f-0789-8136-2b3f-6f9884e4bc99&amp;wa=wsignin1.0&amp;wtrealm=urn%3afederation%3aMicrosoftOnline&amp;wctx=LoginOptions%3D3%26estsredirect%3d2%26estsrequest%3drQQIARAAjZJPaNNwFMeTZXZd1a1zIMOLpYqINWmSJk1TGFqn29r1z-y6rq3I-OWXX9q0vyQ1Sbe2cwfRgx7E4Wl6Er3tNPUi4kF33GnexJOIguyiCMKOtnhVEB5f3oMvj8fnfX0egeEEhj1H8QwbPy1zsqxoPEsDLqLRAsdKdExUIc3yHCdIMQlpQsw-5vOfvP1t595Q9FbogrV558ubR1vkqZrrNp14OGy1XGxZDcbSNB2iSFRkoGWEDaDj8CuS3CPJrYHTLCcDOSqzNAciEi3JQKBjSBJoIGgqAJAVIa99HBjNJVpuje-LZetdtD8w4iCMoLsMILRapvtzwKvZoGog031MPSFRJ9WsTCWjyXqinVu6ImbrjdV0YbqW6UI3yxcb2SlWyBWmcbqAG5luo5Pppmq5y5lOWU86SYPD6swVPWc6OlgS2UopVStH8k2FFxdR6RJO1i0dGsUGKKVwOXJV10rs5E0wm2fhbCaa7sgrainvKLxspw3ZqBi4Xilk-OyCWFd4dkVZmm4qU7Et6sTfIfUJvaA8PTUsc5dK_NsVZlSkgRZ2A1YTmboaaNqWpmMU6FmwbqI-GeQ4HyjyMzUBa8BUgck0gavjizaoV-1mf8neILk_eNw76B-ZIALE2TMsFfd6fX6iPx0Mkk8P9R48fHH8pVLtJB88f3h_SFaJ3UNhzV5YEm7MZFbKlUqnlmoXuXkEObe-iLKoOOfGQkUVJ9IVsT1rTcpxbsNDbnjGX3iGvZSfCFJT89yuZ9RwAGbqDqPY1qqD7B8e8u4Q8Xr4f8Kz6SO3fKFcsZxO6nkRiG6VBYmUwC8vOIbDazOlRXnR1QuWOlesltItGm77yL3D5McjMZ8HYqAbzjFmLfiHz7JrNZAZjK8F24azDGG_WwG4hZxg_Fqwd2rw-vr6-tujxMHI13c7z369v_d9dn_0vGRLBcXOSSmuCBLzuM2vdiMh94Yo8OFYRBRArReFaASEkt3y5Laf-NSrMeJgLPAb0&amp;cbcxt=&amp;"> <script type="text/javascript">
+                function SelectOption(option) {
+                    var i = document.getElementById('optionSelection');
+                    i.value = option;
+                    document.forms['options'].submit();
+                    return false;
+                }
+            </script> <input id="optionSelection" name="AuthMethod" type="hidden">
+<div class="groupMargin">&nbsp;</div>
+</form>
+</div>
+
+<div class="groupMargin" id="introduction">&nbsp;</div>
+<script type="text/javascript">
+        //<![CDATA[
+
+            function Login() {
+            }
+
+            Login.userNameInput = 'userNameInput';
+            Login.passwordInput = 'passwordInput';
+
+            Login.initialize = function () {
+
+                var u = new InputUtil();
+
+                u.checkError();
+                u.setInitialFocus(Login.userNameInput);
+                u.setInitialFocus(Login.passwordInput);
+            }();
+
+            Login.submitLoginRequest = function () { 
+                var u = new InputUtil();
+                var e = new LoginErrors();
+
+                var userName = document.getElementById(Login.userNameInput);
+                var password = document.getElementById(Login.passwordInput);
+
+                if (!userName.value || !userName.value.match('[@\\\\]')) {
+                    u.setError(userName, e.userNameFormatError);
+                    return false;
+                }
+
+                if (!password.value) {
+                    u.setError(password, e.passwordEmpty);
+                    return false;
+                }
+
+                if (password.value.length > maxPasswordLength) {
+                    u.setError(password, e.passwordTooLong);
+                    return false;
+                }
+
+                document.forms['loginForm'].submit();
+                return false;
+            };
+
+            InputUtil.makePlaceholder(Login.userNameInput);
+            InputUtil.makePlaceholder(Login.passwordInput);
+        //]]>
+        </script></div>
+</div>
+</div>
+
+<div id="footerPlaceholder">&nbsp;</div>
+</div>
+
+<div id="footer">
+<div class="floatReverse" id="footerLinks">
+<div><span id="copyright">© 2013 Microsoft</span></div>
+</div>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+// Copyright (c) Microsoft Corporation.  All rights reserved.
+
+// This file contains several workarounds on inconsistent browser behaviors that administrators may customize.
+"use strict";
+
+// iPhone email friendly keyboard does not include "\" key, use regular keyboard instead.
+// Note change input type does not work on all versions of all browsers.
+if (navigator.userAgent.match(/iPhone/i) != null) {
+    var emails = document.querySelectorAll("input[type='email']");
+    if (emails) {
+        for (var i = 0; i < emails.length; i++) {
+            emails[i].type = 'text';
+        }
+    }
+}
+
+// In the CSS file we set the ms-viewport to be consistent with the device dimensions, 
+// which is necessary for correct functionality of immersive IE. 
+// However, for Windows 8 phone we need to reset the ms-viewport's dimension to its original
+// values (auto), otherwise the viewport dimensions will be wrong for Windows 8 phone.
+// Windows 8 phone has agent string 'IEMobile 10.0'
+if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+    var msViewportStyle = document.createElement("style");
+    msViewportStyle.appendChild(
+        document.createTextNode(
+            "@-ms-viewport{width:auto!important}"
+        )
+    );
+    msViewportStyle.appendChild(
+        document.createTextNode(
+            "@-ms-viewport{height:auto!important}"
+        )
+    );
+    document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+}
+
+// If the innerWidth is defined, use it as the viewport width.
+if (window.innerWidth && window.outerWidth && window.innerWidth !== window.outerWidth) {
+    var viewport = document.querySelector("meta[name=viewport]");
+    viewport.setAttribute('content', 'width=' + window.innerWidth + 'px; initial-scale=1.0; maximum-scale=1.0');
+}
+
+// Gets the current style of a specific property for a specific element.
+function getStyle(element, styleProp) {
+    var propStyle = null;
+
+    if (element && element.currentStyle) {
+        propStyle = element.currentStyle[styleProp];
+    }
+    else if (element && window.getComputedStyle) {
+        propStyle = document.defaultView.getComputedStyle(element, null).getPropertyValue(styleProp);
+    }
+
+    return propStyle;
+}
+
+// The script below is used for downloading the illustration image 
+// only when the branding is displaying. This script work together
+// with the code in PageBase.cs that sets the html inline style
+// containing the class 'illustrationClass' with the background image.
+var computeLoadIllustration = function () {
+    var branding = document.getElementById("branding");
+    var brandingDisplay = getStyle(branding, "display");
+    var brandingWrapperDisplay = getStyle(document.getElementById("brandingWrapper"), "display");
+
+    if (brandingDisplay && brandingDisplay !== "none" &&
+        brandingWrapperDisplay && brandingWrapperDisplay !== "none") {
+        var newClass = "illustrationClass";
+
+        if (branding.classList && branding.classList.add) {
+            branding.classList.add(newClass);
+        } else if (branding.className !== undefined) {
+            branding.className += " " + newClass;
+        }
+        if (window.removeEventListener) {
+            window.removeEventListener('load', computeLoadIllustration, false);
+            window.removeEventListener('resize', computeLoadIllustration, false);
+        }
+        else if (window.detachEvent) {
+            window.detachEvent('onload', computeLoadIllustration);
+            window.detachEvent('onresize', computeLoadIllustration);
+        }
+    }
+};
+
+if (window.addEventListener) {
+    window.addEventListener('resize', computeLoadIllustration, false);
+    window.addEventListener('load', computeLoadIllustration, false);
+}
+else if (window.attachEvent) {
+    window.attachEvent('onresize', computeLoadIllustration);
+    window.attachEvent('onload', computeLoadIllustration);
+}
+
+//]]>
+</script>
+
+<p>&nbsp;</p>
+
+
+</body></html>
